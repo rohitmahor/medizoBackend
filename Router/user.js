@@ -43,7 +43,7 @@ router.post('/profile/bookApp',function(req,res){
   var msg = req.body.msg;
   var medium = req.body.medium;
 
-  database.bookAppoinment(res, uid, did, slot, msg, medium);
+  database.bookAppoinment(res, uid, did, start, end, msg, medium);
 })
 
 

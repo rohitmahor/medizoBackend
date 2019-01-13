@@ -126,7 +126,7 @@ const updateAvailability = (res,id,val)=>{
   })
 }
 
-const bookAppoinment = (res, uid, did, slot, msg, medium)=>{
+const bookAppoinment = (res, uid, did, start, end, msg, medium)=>{
   var query1 = format("select id from facility where provider_id="+"'" + id + "'");
 
   var facilityID
@@ -138,7 +138,32 @@ const bookAppoinment = (res, uid, did, slot, msg, medium)=>{
     facilityID = result.row[0].id;
   })
 
-  var query2 = format("insert into appoinments('facility_id', 'pateint_id', 'booked_date', 'start_time', 'end_time', ");
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if(dd<10) {
+    dd = '0'+dd
+  } 
+
+  if(mm<10) {
+    mm = '0'+mm
+  } 
+
+  today = mm + '-' + dd + '-' + yyyy;
+
+  var query2 = format("insert into appoinments('facility_id', 'pateint_id', 'booked_date', 'start_time', 'end_time') "+
+                      "values(" + "'" + facilityID + "'", "'" + uid + "'", "'" + today + "'", "'" + start + "'", "'" + end+ "')");
+  myClient.query(query2, function(err, result){
+    if(err){
+      console.log(err);
+    }
+    else{
+      res.send(true);
+    }
+  })
+  
 
 }
 
